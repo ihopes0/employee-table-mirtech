@@ -1,24 +1,30 @@
 # Employee Table
 #### Тестовое задание на вакансию Junior .Net Core Разработчик компании МирТех
 
-Система управления сотрудниками, реализованная с использованием:
+![](https://img.shields.io/badge/.NET-9.0-blue)
+![](https://img.shields.io/badge/Angular-16.0-red)
+![](https://img.shields.io/badge/MSSQL-Server-lightgrey)
+
+Это веб-приложение для управления сотрудниками компании, реализованное с использованием ASP.NET Core 9 для бэкенда и Angular для фронтенда.
 - Clean Architecture
 - Domain-Driven Design (DDD)
 - ASP.NET Core 9 Web API
 - Angular 16
 - Entity Framework Core
 - MSSQL Server
+- Docker
 ***
 ## Особенности архитектуры
 - Четкое разделение на слои (Domain, Application, Infrastructure, Presentation)
 - Использование CQRS с MediatR
 - Value Objects (Salary, Department)
 - Реализация Unit of Work и Repository
+- Реализация Docker контейнеризации
 ***
 ## Запуск проекта
 
 ### Требования
-- Docker
+- [Docker и Docker Compose](https://docs.docker.com/engine/install/)
 
 ### Шаги запуска
 1. Клонировать репозиторий
@@ -42,9 +48,9 @@ docker compose up -d
 
 https://docs/swagger-ui.png
 
-### Основные эндпоинты
+## Основные эндпоинты
 
-#### 1. Получение сотрудников с фильтрацией
+### 1. Получение сотрудников с фильтрацией
 
     GET /api/employees
 
@@ -84,7 +90,23 @@ https://docs/swagger-ui.png
 }
 ```
 
-#### 2. Создание сотрудника
+### 2. Получение сотрудника по ID
+
+    GET /api/employees/{id}
+
+Пример ответа:
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "fullName": "string",
+  "birthDate": "2025-07-09T22:00:25.498Z",
+  "employmentDate": "2025-07-09T22:00:25.498Z",
+  "salary": 0,
+  "department": "string"
+}
+```
+
+### 3. Создание сотрудника
 
     POST /api/employees
 
@@ -105,7 +127,7 @@ https://docs/swagger-ui.png
 }
 ```
 
-#### 3. Обновление сотрудника
+### 4. Обновление сотрудника
 
     PUT /api/employees/{id}
 
@@ -130,3 +152,11 @@ https://docs/swagger-ui.png
   "department": "Отдел виртуализации"
 }
 ```
+### 5. Удаление сотрудника
+
+    DELETE /api/employees/{id}
+
+***
+
+## Дополнительно
+- SQL скрипты находятся в папке src/EmployeeTable.Infrastructure/Scripts
