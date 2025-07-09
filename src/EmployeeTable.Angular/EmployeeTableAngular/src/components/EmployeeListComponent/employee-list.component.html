@@ -1,0 +1,158 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Сотрудники</h5>
+    <button class="btn btn-primary" (click)="openCreateModal()">
+      <i class="fas fa-plus"></i> Добавить сотрудника
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Загрузка...</span>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading">
+
+       <!-- Фильтры -->
+       <div class="filters card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Отдел</label>
+              <input type="text" class="form-control" [(ngModel)]="filters.department" 
+                     (input)="applyFilters()" placeholder="Фильтровать по отделу">
+            </div>
+            
+            <div class="col-md-3">
+              <label>Ф.И.О.</label>
+              <input type="text" class="form-control" [(ngModel)]="filters.fullName" 
+                     (input)="applyFilters()" placeholder="Фильтровать по ФИО">
+            </div>
+            
+            <div class="col-md-2">
+              <label>Дата рождения</label>
+              <input type="date" class="form-control" [(ngModel)]="filters.birthDate" 
+                     (change)="applyFilters()">
+            </div>
+            
+            <div class="col-md-2">
+              <label>Дата трудоустройства</label>
+              <input type="date" class="form-control" [(ngModel)]="filters.employmentDate" 
+                     (change)="applyFilters()">
+            </div>
+            
+            <div class="col-md-2">
+              <label>Заработная плата</label>
+              <input type="number" class="form-control" [(ngModel)]="filters.salary" 
+                     (input)="applyFilters()" placeholder="Фильтровать по заработной плате">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Таблица сотрудников -->
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th (click)="sort('department')" class="sortable">
+                Отдел
+                <span *ngIf="sortField === 'department'">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-sort-up': sortDirection === 'asc',
+                      'fa-sort-down': sortDirection === 'desc'
+                    }"
+                  ></i>
+                </span>
+              </th>
+              <th (click)="sort('fullName')" class="sortable">
+                Фамилия Имя Отчество
+                <span *ngIf="sortField === 'fullName'">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-sort-up': sortDirection === 'asc',
+                      'fa-sort-down': sortDirection === 'desc'
+                    }"
+                  ></i>
+                </span>
+              </th>
+              <th (click)="sort('birthDate')" class="sortable">
+                Дата рождения
+                <span *ngIf="sortField === 'birthDate'">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-sort-up': sortDirection === 'asc',
+                      'fa-sort-down': sortDirection === 'desc'
+                    }"
+                  ></i>
+                </span>
+              </th>
+              <th (click)="sort('employmentDate')" class="sortable">
+                Дата начала работы
+                <span *ngIf="sortField === 'employmentDate'">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-sort-up': sortDirection === 'asc',
+                      'fa-sort-down': sortDirection === 'desc'
+                    }"
+                  ></i>
+                </span>
+              </th>
+              <th (click)="sort('salary')" class="sortable">
+                Зарплата
+                <span *ngIf="sortField === 'salary'">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-sort-up': sortDirection === 'asc',
+                      'fa-sort-down': sortDirection === 'desc'
+                    }"
+                  ></i>
+                </span>
+              </th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let employee of filteredEmployees">
+              <td>{{ employee.department }}</td>
+              <td>{{ employee.fullName }}</td>
+              <td>{{ employee.birthDate | date : 'mediumDate' }}</td>
+              <td>{{ employee.employmentDate | date : 'mediumDate' }}</td>
+              <td>{{ employee.salary | currency : 'RUB' : 'symbol-narrow' : '1.2-2' : 'ru-RU' }}</td>
+              <td>
+                <button
+                  class="btn btn-sm btn-primary mr-1"
+                  (click)="openEditModal(employee)"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="openDeleteModal(employee)"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="filteredEmployees.length === 0" class="text-center py-4">
+          <p>Не найдены сотрудники, удовлетворяющие фильтрам</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
