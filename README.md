@@ -44,7 +44,7 @@ docker compose up -d
 ***
 ## Документация API (OpenAPI)
 
-После запуска Web API документация доступна по адресу: https://localhost:5225/swagger
+После запуска Web API документация доступна по адресу: http://localhost:5225/swagger
 
 https://docs/swagger-ui.png
 
