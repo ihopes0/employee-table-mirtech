@@ -35,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
 }
 
+app.ApplyMigrations(); 
+
 app.UseRouting();
 
 app.UseEndpoints(endpoints =>

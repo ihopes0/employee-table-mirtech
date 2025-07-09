@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    environment:
+      MSSQL_SA_PASSWORD: "Adminxyz22#"
+      ACCEPT_EULA: "Y"    
+    user: root
+    healthcheck:
+      test: [ "CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P Adminxyz22# -Q 'SELECT 1' || exit 1" ]
+      interval: 1s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+    volumes:
+      - mssql_data:/var/opt/mssql
+      - ./src/EmployeeTable.Infrastructure/Scripts/db-init/init.sql:/db/init.sql
+      - ./src/EmployeeTable.Infrastructure/Scripts/db-init/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/bin/bash", "/entrypoint.sh"]
+    networks:
+      employee-table-network:
+    restart: always
+    
+  backend:
+    container_name: employeetable-webapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5225:80"
+    networks:
+      employee-table-network:
+    depends_on:
+      mssql:
+        condition: service_healthy
+        
+  frontend:
+    container_name: employeetable-angular
+    build:
+      context: ./src/EmployeeTable.Angular/EmployeeTableAngular
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    networks:
+      employee-table-network:
+    
+
+volumes:
+  mssql_data:
+
+networks:
+  employee-table-network:
+    driver: bridge

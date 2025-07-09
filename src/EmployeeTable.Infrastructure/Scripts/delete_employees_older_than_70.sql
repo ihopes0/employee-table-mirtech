@@ -1,0 +1,2 @@
+DELETE FROM Employees
+WHERE DATEDIFF(YEAR, BirthDate, GETDATE()) > 70

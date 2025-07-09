@@ -19,7 +19,15 @@ public static class DependencyInjection
         // DbContext
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(
-                @"Server=localhost,1433;Database=EmployeeTableDB;User Id=sa;Password=Adminxyz22#;TrustServerCertificate=True"));
+                @"Server=mssql,1433;Database=EmployeeTableDB;User Id=sa;Password=Adminxyz22#;TrustServerCertificate=True",
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 10,
+                        maxRetryDelay: TimeSpan.FromSeconds(5), 
+                        errorNumbersToAdd: null); 
+                })
+        );
 
         // Repositories
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();

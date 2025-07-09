@@ -19,8 +19,4 @@
       <ProjectReference Include="..\EmployeeTable.Domain\EmployeeTable.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Scripts\" />
-    </ItemGroup>
-
 </Project>
