@@ -40,7 +40,6 @@ msbuild.wrn
 .vs/
 
 dbdata/
-entrypoint.sh
 
 # Packages
 *.7z
